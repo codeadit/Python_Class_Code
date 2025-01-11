@@ -1,0 +1,76 @@
+# Creators: Adit Shah and Kush Zhaveri
+
+import random
+
+# Edge Cases
+
+def checkcipher(cipher):
+  alist = []
+  for pair in cipher:
+    for x in range(len(pair[1])):
+      alist.append(pair[1][x])
+  if len(alist) != len(set(alist)):
+    return "Duplicates in the list"
+  else:
+    return "No duplicates"
+
+def messageclear(message):
+  if message == "":
+    return "No message"
+
+def ciphercheck(message,cipher):
+  if len(set(message)) > len(cipher):
+    return "Not Valid"
+  else:
+    return "Valid"
+
+# Encrypt
+
+def encrypt(message, cipher):
+  encrypted = ""
+  
+  if checkcipher(cipher) == "Duplicates in the list":
+    return "Error: Duplicates in the list"
+  if messageclear(message) == "No message":
+    return "Error: No message"
+  if ciphercheck(message,cipher) == "Not Valid":
+    return "Error: Not Valid"
+    
+  for letter in message:
+    in_cipher = False
+    for i in range(len(cipher)):
+      if letter == cipher[i][0]:
+        encrypted += random.choice(cipher[i][1])
+        in_cipher = True
+    if not(in_cipher): 
+      return ("The letter " + letter + " is not in the cipher.")
+  return encrypted
+
+# Inverse Cipher
+
+def getInverseCipher(cipher):
+  cipherInverse = []
+  if checkcipher(cipher) == "Duplicates in the list":
+    return "Error: Cipher not one-to-one"
+    
+  for set in cipher:
+    for item in set[1]:
+      pseudo = [item, set[0]]
+      cipherInverse.append(pseudo)
+  return cipherInverse
+
+# Decrypt
+
+def decrypt(message, cipherInverse):
+  decrypted = ""
+
+  if messageclear(message) == "No message":
+    return "Error: No message"
+  if ciphercheck(message,cipherInverse) == "Not Valid":
+    return "Error: Not Valid"
+
+  for letter in message:
+    for pair in range(len(cipherInverse)):
+      if letter == cipherInverse[pair][0]:
+        decrypted += cipherInverse[pair][1]
+  return decrypted
